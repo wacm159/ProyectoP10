@@ -19,6 +19,7 @@ namespace PX.Controllers
         {
             var ticket = db.Ticket.Include(t => t.parqueo1);
             return View(ticket.ToList());
+
         }
 
         // GET: Ticketmvc/Details/5
