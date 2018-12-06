@@ -18,6 +18,7 @@ namespace PX.Controllers
         public ActionResult Index()
         {
             return View(db.Conductor.ToList());
+
         }
 
         // GET: Conductormvc/Details/5
