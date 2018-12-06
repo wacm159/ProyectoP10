@@ -1,0 +1,587 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ParqueoDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Catalogo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tipo_servicio" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Precio" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Conductor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tipo_Licencia" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Dpi" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Telefono" Type="int" Nullable="false" />
+          <Property Name="Edad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="parqueo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ubicacion" Type="int" Nullable="false" />
+          <Property Name="Precio" Type="int" Nullable="false" />
+          <Property Name="Capacidad" Type="int" Nullable="false" />
+          <Property Name="Estado" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Parqueo_Vehiculo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Servicios">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Catalogo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Parqueo" Type="int" Nullable="false" />
+          <Property Name="Fecha" Type="date" Nullable="false" />
+          <Property Name="Total" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ubicacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Servicio" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vehiculo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Matricula" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Color" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Linea" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Categoria" Type="int" Nullable="false" />
+          <Property Name="Conductor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vehiculo_parqueo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Vehiculo" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_parqueo_Ubicacion">
+          <End Role="Ubicacion" Type="Self.Ubicacion" Multiplicity="1" />
+          <End Role="parqueo" Type="Self.parqueo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubicacion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="parqueo">
+              <PropertyRef Name="Ubicacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_parqueo_Vehiculo_parqueo">
+          <End Role="Vehiculo_parqueo" Type="Self.Vehiculo_parqueo" Multiplicity="1" />
+          <End Role="parqueo" Type="Self.parqueo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo_parqueo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="parqueo">
+              <PropertyRef Name="Parqueo_Vehiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Servicios_Catalogo">
+          <End Role="Catalogo" Type="Self.Catalogo" Multiplicity="1" />
+          <End Role="Servicios" Type="Self.Servicios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Servicios">
+              <PropertyRef Name="Catalogo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_parqueo">
+          <End Role="parqueo" Type="Self.parqueo" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="parqueo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="Parqueo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ubicacion_Servicios">
+          <End Role="Servicios" Type="Self.Servicios" Multiplicity="1" />
+          <End Role="Ubicacion" Type="Self.Ubicacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servicios">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ubicacion">
+              <PropertyRef Name="Servicio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehiculo_Categoria">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vehiculo">
+              <PropertyRef Name="Categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehiculo_Conductor">
+          <End Role="Conductor" Type="Self.Conductor" Multiplicity="1" />
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conductor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vehiculo">
+              <PropertyRef Name="Conductor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehiculo_parqueo_Vehiculo">
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="1" />
+          <End Role="Vehiculo_parqueo" Type="Self.Vehiculo_parqueo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vehiculo_parqueo">
+              <PropertyRef Name="Vehiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ParqueoDBModelStoreContainer">
+          <EntitySet Name="Catalogo" EntityType="Self.Catalogo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Conductor" EntityType="Self.Conductor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="parqueo" EntityType="Self.parqueo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Servicios" EntityType="Self.Servicios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ubicacion" EntityType="Self.Ubicacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vehiculo" EntityType="Self.Vehiculo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vehiculo_parqueo" EntityType="Self.Vehiculo_parqueo" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_parqueo_Ubicacion" Association="Self.FK_parqueo_Ubicacion">
+            <End Role="Ubicacion" EntitySet="Ubicacion" />
+            <End Role="parqueo" EntitySet="parqueo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_parqueo_Vehiculo_parqueo" Association="Self.FK_parqueo_Vehiculo_parqueo">
+            <End Role="Vehiculo_parqueo" EntitySet="Vehiculo_parqueo" />
+            <End Role="parqueo" EntitySet="parqueo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Servicios_Catalogo" Association="Self.FK_Servicios_Catalogo">
+            <End Role="Catalogo" EntitySet="Catalogo" />
+            <End Role="Servicios" EntitySet="Servicios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_parqueo" Association="Self.FK_Ticket_parqueo">
+            <End Role="parqueo" EntitySet="parqueo" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ubicacion_Servicios" Association="Self.FK_Ubicacion_Servicios">
+            <End Role="Servicios" EntitySet="Servicios" />
+            <End Role="Ubicacion" EntitySet="Ubicacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehiculo_Categoria" Association="Self.FK_Vehiculo_Categoria">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehiculo_Conductor" Association="Self.FK_Vehiculo_Conductor">
+            <End Role="Conductor" EntitySet="Conductor" />
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehiculo_parqueo_Vehiculo" Association="Self.FK_Vehiculo_parqueo_Vehiculo">
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+            <End Role="Vehiculo_parqueo" EntitySet="Vehiculo_parqueo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ParqueoDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Catalogo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tipo_servicio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Precio" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Servicios" Relationship="Self.FK_servi" FromRole="Catalogo" ToRole="Servicios" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Vehiculo" Relationship="Self.FK_vehicate" FromRole="Categoria" ToRole="Vehiculo" />
+        </EntityType>
+        <EntityType Name="Conductor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tipo_Licencia" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Dpi" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="Int32" Nullable="false" />
+          <Property Name="Edad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Vehiculo" Relationship="Self.FK_vehicofer" FromRole="Conductor" ToRole="Vehiculo" />
+        </EntityType>
+        <EntityType Name="parqueo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ubicacion" Type="Int32" Nullable="false" />
+          <Property Name="Precio" Type="Int32" Nullable="false" />
+          <Property Name="Capacidad" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Parqueo_Vehiculo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Vehiculo_parqueo" Relationship="Self.FK_parquevehiculs" FromRole="parqueo" ToRole="Vehiculo_parqueo" />
+          <NavigationProperty Name="Ubicacion1" Relationship="Self.FK_parquin" FromRole="parqueo" ToRole="Ubicacion" />
+          <NavigationProperty Name="Ticket" Relationship="Self.FK_partick" FromRole="parqueo" ToRole="Ticket" />
+        </EntityType>
+        <EntityType Name="Servicios">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Catalogo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Catalogo1" Relationship="Self.FK_servi" FromRole="Servicios" ToRole="Catalogo" />
+          <NavigationProperty Name="Ubicacion" Relationship="Self.FK_ubicas" FromRole="Servicios" ToRole="Ubicacion" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Parqueo" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Total" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="parqueo1" Relationship="Self.FK_partick" FromRole="Ticket" ToRole="parqueo" />
+        </EntityType>
+        <EntityType Name="Ubicacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Servicio" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="parqueo" Relationship="Self.FK_parquin" FromRole="Ubicacion" ToRole="parqueo" />
+          <NavigationProperty Name="Servicios" Relationship="Self.FK_ubicas" FromRole="Ubicacion" ToRole="Servicios" />
+        </EntityType>
+        <EntityType Name="Vehiculo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Matricula" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Linea" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Categoria" Type="Int32" Nullable="false" />
+          <Property Name="Conductor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Categoria1" Relationship="Self.FK_vehicate" FromRole="Vehiculo" ToRole="Categoria" />
+          <NavigationProperty Name="Conductor1" Relationship="Self.FK_vehicofer" FromRole="Vehiculo" ToRole="Conductor" />
+          <NavigationProperty Name="Vehiculo_parqueo" Relationship="Self.FK_vehic" FromRole="Vehiculo" ToRole="Vehiculo_parqueo" />
+        </EntityType>
+        <EntityType Name="Vehiculo_parqueo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Vehiculo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="parqueo" Relationship="Self.FK_parquevehiculs" FromRole="Vehiculo_parqueo" ToRole="parqueo" />
+          <NavigationProperty Name="Vehiculo1" Relationship="Self.FK_vehic" FromRole="Vehiculo_parqueo" ToRole="Vehiculo" />
+        </EntityType>
+        <Association Name="FK_servi">
+          <End Role="Catalogo" Type="Self.Catalogo" Multiplicity="1" />
+          <End Role="Servicios" Type="Self.Servicios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Servicios">
+              <PropertyRef Name="Catalogo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_vehicate">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vehiculo">
+              <PropertyRef Name="Categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_vehicofer">
+          <End Role="Conductor" Type="Self.Conductor" Multiplicity="1" />
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conductor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vehiculo">
+              <PropertyRef Name="Conductor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_parquevehiculs">
+          <End Role="Vehiculo_parqueo" Type="Self.Vehiculo_parqueo" Multiplicity="1" />
+          <End Role="parqueo" Type="Self.parqueo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo_parqueo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="parqueo">
+              <PropertyRef Name="Parqueo_Vehiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_parquin">
+          <End Role="Ubicacion" Type="Self.Ubicacion" Multiplicity="1" />
+          <End Role="parqueo" Type="Self.parqueo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubicacion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="parqueo">
+              <PropertyRef Name="Ubicacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_partick">
+          <End Role="parqueo" Type="Self.parqueo" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="parqueo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="Parqueo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ubicas">
+          <End Role="Servicios" Type="Self.Servicios" Multiplicity="1" />
+          <End Role="Ubicacion" Type="Self.Ubicacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servicios">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ubicacion">
+              <PropertyRef Name="Servicio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_vehic">
+          <End Role="Vehiculo" Type="Self.Vehiculo" Multiplicity="1" />
+          <End Role="Vehiculo_parqueo" Type="Self.Vehiculo_parqueo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehiculo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vehiculo_parqueo">
+              <PropertyRef Name="Vehiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ParqueoDBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Catalogo" EntityType="Self.Catalogo" />
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" />
+          <EntitySet Name="Conductor" EntityType="Self.Conductor" />
+          <EntitySet Name="parqueo" EntityType="Self.parqueo" />
+          <EntitySet Name="Servicios" EntityType="Self.Servicios" />
+          <EntitySet Name="Ticket" EntityType="Self.Ticket" />
+          <EntitySet Name="Ubicacion" EntityType="Self.Ubicacion" />
+          <EntitySet Name="Vehiculo" EntityType="Self.Vehiculo" />
+          <EntitySet Name="Vehiculo_parqueo" EntityType="Self.Vehiculo_parqueo" />
+          <AssociationSet Name="FK_servi" Association="Self.FK_servi">
+            <End Role="Catalogo" EntitySet="Catalogo" />
+            <End Role="Servicios" EntitySet="Servicios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_vehicate" Association="Self.FK_vehicate">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_vehicofer" Association="Self.FK_vehicofer">
+            <End Role="Conductor" EntitySet="Conductor" />
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_parquevehiculs" Association="Self.FK_parquevehiculs">
+            <End Role="Vehiculo_parqueo" EntitySet="Vehiculo_parqueo" />
+            <End Role="parqueo" EntitySet="parqueo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_parquin" Association="Self.FK_parquin">
+            <End Role="Ubicacion" EntitySet="Ubicacion" />
+            <End Role="parqueo" EntitySet="parqueo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_partick" Association="Self.FK_partick">
+            <End Role="parqueo" EntitySet="parqueo" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ubicas" Association="Self.FK_ubicas">
+            <End Role="Servicios" EntitySet="Servicios" />
+            <End Role="Ubicacion" EntitySet="Ubicacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_vehic" Association="Self.FK_vehic">
+            <End Role="Vehiculo" EntitySet="Vehiculo" />
+            <End Role="Vehiculo_parqueo" EntitySet="Vehiculo_parqueo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ParqueoDBModelStoreContainer" CdmEntityContainer="ParqueoDBEntities1">
+          <EntitySetMapping Name="Catalogo">
+            <EntityTypeMapping TypeName="ParqueoDBModel.Catalogo">
+              <MappingFragment StoreEntitySet="Catalogo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Tipo_servicio" ColumnName="Tipo_servicio" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categoria">
+            <EntityTypeMapping TypeName="ParqueoDBModel.Categoria">
+              <MappingFragment StoreEntitySet="Categoria">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Conductor">
+            <EntityTypeMapping TypeName="ParqueoDBModel.Conductor">
+              <MappingFragment StoreEntitySet="Conductor">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Tipo_Licencia" ColumnName="Tipo_Licencia" />
+                <ScalarProperty Name="Dpi" ColumnName="Dpi" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Edad" ColumnName="Edad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="parqueo">
+            <EntityTypeMapping TypeName="ParqueoDBModel.parqueo">
+              <MappingFragment StoreEntitySet="parqueo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Ubicacion" ColumnName="Ubicacion" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Capacidad" ColumnName="Capacidad" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Parqueo_Vehiculo" ColumnName="Parqueo_Vehiculo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Servicios">
+            <EntityTypeMapping TypeName="ParqueoDBModel.Servicios">
+              <MappingFragment StoreEntitySet="Servicios">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Catalogo" ColumnName="Catalogo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ticket">
+            <EntityTypeMapping TypeName="ParqueoDBModel.Ticket">
+              <MappingFragment StoreEntitySet="Ticket">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Parqueo" ColumnName="Parqueo" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ubicacion">
+            <EntityTypeMapping TypeName="ParqueoDBModel.Ubicacion">
+              <MappingFragment StoreEntitySet="Ubicacion">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Servicio" ColumnName="Servicio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehiculo">
+            <EntityTypeMapping TypeName="ParqueoDBModel.Vehiculo">
+              <MappingFragment StoreEntitySet="Vehiculo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Matricula" ColumnName="Matricula" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Linea" ColumnName="Linea" />
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
+                <ScalarProperty Name="Conductor" ColumnName="Conductor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehiculo_parqueo">
+            <EntityTypeMapping TypeName="ParqueoDBModel.Vehiculo_parqueo">
+              <MappingFragment StoreEntitySet="Vehiculo_parqueo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Vehiculo" ColumnName="Vehiculo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
