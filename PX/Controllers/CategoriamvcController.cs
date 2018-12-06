@@ -15,6 +15,7 @@ namespace PX.Controllers
     {
         private ParqueoDBEntities1 db = new ParqueoDBEntities1();
 
+
         // GET: Categoriamvc
         public ActionResult Index()
         {
