@@ -266,7 +266,6 @@ C:\progra10\ProyectoPX\PX\bin\es\Microsoft.Owin.Security.Facebook.resources.dll
 C:\progra10\ProyectoPX\PX\bin\es\Microsoft.Owin.Security.Google.resources.dll
 C:\progra10\ProyectoPX\PX\bin\es\Microsoft.Owin.Security.Twitter.resources.dll
 C:\progra10\ProyectoPX\PX\bin\es\Microsoft.Owin.Security.MicrosoftAccount.resources.dll
-C:\progra10\ProyectoPX\PX\obj\Debug\PX.csprojAssemblyReference.cache
 C:\progra10\ProyectoPX\PX\obj\Debug\PX.csproj.CoreCompileInputs.cache
 C:\progra10\ProyectoPX\PX\obj\Debug\PX.csproj.CopyComplete
 C:\progra10\ProyectoPX\PX\obj\Debug\PX.dll
