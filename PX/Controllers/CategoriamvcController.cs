@@ -20,6 +20,7 @@ namespace PX.Controllers
         public ActionResult Index()
         {
             return View(db.Categoria.ToList());
+
         }
 
         // GET: Categoriamvc/Details/5
